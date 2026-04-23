@@ -9,6 +9,7 @@
  * so the user can stop the test at any point cleanly.
  */
 
+async function checkServer() {
     const dot = $('statusDot'), txt = $('statusText');
     dot.className = 'status-dot checking';
     txt.textContent = 'Checking server...';

@@ -2,6 +2,7 @@
  * @fileoverview Results display, localStorage history, and clipboard export.
  */
 
+const GRADE_COLORS = {
     'A+': 'var(--success)', 'A': 'var(--success)',
     'B+': '#22d3ee', 'B': '#22d3ee',
     'C': 'var(--warn)', 'D': '#f97316', 'F': 'var(--danger)',
@@ -53,12 +54,12 @@ function renderHistory() {
     const history = JSON.parse(localStorage.getItem('qspeed_history') || '[]');
     const list = $('historyList');
 
-    // FIX: never destroy historyEmpty via innerHTML — always keep it in DOM, just toggle visibility
+    // Keep historyEmpty in DOM — only toggle its visibility
     const empty = $('historyEmpty');
     if (empty) empty.style.display = history.length === 0 ? '' : 'none';
     if (history.length === 0) return;
 
-    // Remove only history rows, not the empty placeholder
+    // Remove only data rows, never the empty placeholder
     list.querySelectorAll('.history-row').forEach(el => el.remove());
 
     const rows = history.map(h => {
@@ -74,7 +75,6 @@ function renderHistory() {
             <span class="h-val" style="font-size:.75rem;color:${color}">${h.grade}</span>
         </div>`;
     }).join('');
-    // FIX: actually insert the rows into the DOM
     list.insertAdjacentHTML('afterbegin', rows);
 }
 

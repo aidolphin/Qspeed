@@ -4,6 +4,7 @@
  * Wraps at viewport edges. Respects prefers-reduced-motion via CSS.
  */
 
+function initParticles() {
     const cv = $('particleCanvas');
     const ctx = cv.getContext('2d');
     let W, H;

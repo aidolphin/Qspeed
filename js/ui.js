@@ -4,6 +4,7 @@
  * FAQ accordion, and full UI reset.
  */
 
+const PHASE_MAP = {
     ping: 'phPing',
     jitter: 'phJitter',
     download: 'phDown',
@@ -34,7 +35,7 @@ function markPhaseDone(p) {
 function resetUI() {
     STATE.targetSpeed = 0;
     $('goBtn').classList.remove('testing');
-    $('goIco').className = 'fas fa-play text-lg';
+    $('goIco').className = 'fas fa-play';
     $('goTxt').textContent = 'GO';
     Object.values(PHASE_MAP).forEach(id => $(id).classList.remove('active', 'done'));
     $('phLoss').classList.remove('active', 'done');

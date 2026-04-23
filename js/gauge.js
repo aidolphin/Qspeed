@@ -4,7 +4,8 @@
  * color gradient (green → yellow → red), and glow effect.
  * Auto-scales the max value based on measured speed.
  */
- r: 270, lw: 14, start: Math.PI * 0.75, span: Math.PI * 1.5, ticks: 30, glow: 24 };
+
+const G = { cx: 340, cy: 340, r: 270, lw: 14, start: Math.PI * 0.75, span: Math.PI * 1.5, ticks: 30, glow: 24 };
 let gCtx;
 
 function gaugeColor(ratio) {
@@ -74,7 +75,6 @@ function drawGauge() {
         c.beginPath(); c.arc(cx, cy, r, start, endAngle);
         c.strokeStyle = clr; c.lineWidth = lw; c.lineCap = 'round'; c.stroke();
         c.restore();
-        // Second pass for intensity
         c.beginPath(); c.arc(cx, cy, r, start, endAngle);
         c.strokeStyle = clr; c.lineWidth = lw; c.lineCap = 'round'; c.stroke();
     }
@@ -83,7 +83,6 @@ function drawGauge() {
     c.beginPath(); c.arc(cx, cy, r + lw / 2 + 8, start, start + span);
     c.strokeStyle = 'rgba(255,255,255,0.02)'; c.lineWidth = 1; c.stroke();
 
-    // Update number
     const disp = STATE.currentSpeed < 10 ? STATE.currentSpeed.toFixed(1) : Math.round(STATE.currentSpeed);
     $('speedNum').textContent = disp;
     $('speedNum').style.color = ratio > 0.01 ? gaugeColor(ratio) : 'var(--fg)';

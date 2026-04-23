@@ -5,6 +5,7 @@
  *   gauge → graph → score → engine → results → ui → main
  */
 
+async function runTest() {
     if (STATE.testing) {
         if (STATE.abort) STATE.abort.abort();
         STATE.testing = false;
@@ -18,7 +19,6 @@
         return;
     }
 
-    // Reset state
     STATE.testing = true;
     STATE.currentSpeed = 0; STATE.targetSpeed = 0; STATE.maxGauge = 100;
     STATE.history = []; STATE.pingSamples = []; STATE.dlSamples = []; STATE.ulSamples = [];
@@ -92,24 +92,17 @@ function init() {
     detectConnection();
 
     $('goBtn').addEventListener('click', runTest);
-
     $('btnShare').addEventListener('click', copyResults);
-
     $('btnRetest').addEventListener('click', () => {
         $('resultsSection').style.display = 'none';
         runTest();
     });
-
     $('btnClearHistory').addEventListener('click', () => {
         localStorage.removeItem('qspeed_history');
         renderHistory();
         toast('History cleared');
     });
-
-    window.addEventListener('resize', () => {
-        resizeGraph();
-        drawGraph();
-    });
+    window.addEventListener('resize', () => { resizeGraph(); drawGraph(); });
 }
 
 document.addEventListener('DOMContentLoaded', init);
