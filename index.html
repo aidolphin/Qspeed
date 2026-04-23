@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO -->
+    <title>Qspeed — Free Internet Speed Test | Download, Upload & Ping</title>
+    <meta name="description" content="Run a free internet speed test with Qspeed. Measure download speed, upload speed, ping, jitter, and packet loss instantly. No app required.">
+    <meta name="keywords" content="speed test, internet speed test, download speed, upload speed, ping test, jitter, bandwidth test, WiFi speed, broadband speed">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://qspeed.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Qspeed">
+    <meta property="og:title" content="Qspeed — Free Internet Speed Test">
+    <meta property="og:description" content="Test your internet speed in seconds. Download, upload, ping, jitter — all free, no app required.">
+    <meta property="og:url" content="https://qspeed.com/">
+    <meta property="og:image" content="https://qspeed.com/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Qspeed — Free Internet Speed Test">
+    <meta name="twitter:description" content="Test your internet speed in seconds. Download, upload, ping, jitter — all free.">
+    <meta name="twitter:image" content="https://qspeed.com/og-image.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://speed.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://speed.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Styles (modular) -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/ui.css">
+
+    <!-- JSON-LD: WebApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Qspeed",
+        "url": "https://qspeed.com",
+        "description": "Free internet speed test — download, upload, ping, jitter, and packet loss.",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "author": { "@type": "Organization", "name": "Quantum Leaf Automation", "url": "https://quantumleaf.dev" }
+    }
+    </script>
+</head>
+<body>
+
+<!-- Atmosphere -->
+<div class="atmo"><div class="blob b1"></div><div class="blob b2"></div></div>
+<canvas id="particleCanvas"></canvas>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastBox" aria-live="polite"></div>
+
+<!-- ── Header ── -->
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="brand" aria-label="Qspeed Home">
+            <div class="brand-icon">
+                <i class="fas fa-bolt" style="color:#000;font-size:.85rem"></i>
+            </div>
+            <span class="brand-name">Qspeed</span>
+        </a>
+        <nav>
+            <div class="server-status" id="serverStatus" aria-label="Server status">
+                <div class="status-dot checking" id="statusDot"></div>
+                <span id="statusText">Checking...</span>
+            </div>
+            <a href="#history">History</a>
+            <a href="#faq">FAQ</a>
+        </nav>
+    </div>
+    <!-- Ad: Header Leaderboard -->
+    <div style="max-width:1152px;margin:0 auto;padding:0 1rem .75rem">
+        <div class="ad-zone" data-ad-slot="header" aria-hidden="true">Advertisement — 728×90</div>
+    </div>
+</header>
+
+<!-- ── Main ── -->
+<main>
+
+    <!-- Hero: Speed Test -->
+    <section class="section-hero" aria-label="Speed test">
+        <h1>Internet Speed Test</h1>
+        <p class="subtitle">Measure download, upload, ping, jitter &amp; packet loss — free, no app needed.</p>
+
+        <!-- Gauge -->
+        <div class="gauge-wrap">
+            <canvas id="gaugeCanvas" width="680" height="680"></canvas>
+            <div class="gauge-center">
+                <div class="speed-num" id="speedNum">0</div>
+                <div class="speed-unit">Mbps</div>
+            </div>
+        </div>
+
+        <!-- GO Button -->
+        <button class="go-btn" id="goBtn" aria-label="Start speed test" style="margin-top:1.5rem">
+            <i class="fas fa-play" id="goIco" style="font-size:1.1rem"></i>
+            <span class="go-btn-label" id="goTxt">GO</span>
+        </button>
+
+        <!-- Phase Cards -->
+        <div class="phase-grid" id="phaseGrid" role="status" aria-label="Test phases">
+            <div class="phase-card" id="phPing">
+                <div class="phase-icon"><i class="fas fa-signal"></i></div>
+                <div>
+                    <div class="phase-label">Ping</div>
+                    <div class="phase-val" id="vPing">-- ms</div>
+                </div>
+            </div>
+            <div class="phase-card" id="phJitter">
+                <div class="phase-icon"><i class="fas fa-wave-square"></i></div>
+                <div>
+                    <div class="phase-label">Jitter</div>
+                    <div class="phase-val" id="vJitter">-- ms</div>
+                </div>
+            </div>
+            <div class="phase-card" id="phDown">
+                <div class="phase-icon"><i class="fas fa-arrow-down"></i></div>
+                <div>
+                    <div class="phase-label">Download</div>
+                    <div class="phase-val" id="vDown">-- Mbps</div>
+                </div>
+            </div>
+            <div class="phase-card" id="phUp">
+                <div class="phase-icon"><i class="fas fa-arrow-up"></i></div>
+                <div>
+                    <div class="phase-label">Upload</div>
+                    <div class="phase-val" id="vUp">-- Mbps</div>
+                </div>
+            </div>
+            <div class="phase-card col-span-2" id="phLoss">
+                <div class="phase-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div>
+                    <div class="phase-label">Packet Loss</div>
+                    <div class="phase-val" id="vLoss">-- %</div>
+                </div>
+            </div>
+        </div>
+
+        <p id="statusMsg">Press GO to start the test</p>
+    </section>
+
+    <!-- Graph (hidden until test starts) -->
+    <section class="section-inner" id="graphSection" style="display:none" aria-label="Speed graph">
+        <div class="graph-box">
+            <div class="graph-header">
+                <span style="font-weight:500;text-transform:uppercase;letter-spacing:.06em">Speed Over Time</span>
+                <span id="graphLabel">--</span>
+            </div>
+            <canvas id="graphCanvas" height="140"></canvas>
+        </div>
+    </section>
+
+    <!-- Results (hidden until test completes) -->
+    <section class="section-inner" id="resultsSection" style="display:none" aria-label="Test results">
+        <div class="results-layout">
+            <!-- Quality Score -->
+            <div class="score-wrap">
+                <div class="score-label">Quality Score</div>
+                <div class="score-ring">
+                    <svg width="80" height="80" viewBox="0 0 80 80" aria-hidden="true">
+                        <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6"/>
+                        <circle cx="40" cy="40" r="34" fill="none" stroke="var(--accent)" stroke-width="6"
+                            stroke-dasharray="213.6" stroke-dashoffset="213.6" stroke-linecap="round" id="scoreArc"/>
+                    </svg>
+                    <div class="score-val" id="scoreNum">--</div>
+                </div>
+                <div class="score-grade" id="scoreGrade">--</div>
+            </div>
+
+            <!-- Detail Cards -->
+            <div class="result-grid">
+                <div class="result-card">
+                    <div class="r-label">Download</div>
+                    <div class="r-value" style="color:var(--accent)" id="rDown">--</div>
+                    <div class="r-sub">Mbps</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Upload</div>
+                    <div class="r-value" style="color:#0ea5e9" id="rUp">--</div>
+                    <div class="r-sub">Mbps</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Ping</div>
+                    <div class="r-value" id="rPing">--</div>
+                    <div class="r-sub">ms</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Jitter</div>
+                    <div class="r-value" id="rJitter">--</div>
+                    <div class="r-sub">ms</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Packet Loss</div>
+                    <div class="r-value" id="rLoss">--</div>
+                    <div class="r-sub">%</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">ISP</div>
+                    <div class="r-value" style="font-size:1rem" id="rISP">--</div>
+                    <div class="r-sub">&nbsp;</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Server</div>
+                    <div class="r-value" style="font-size:1rem" id="rServer">--</div>
+                    <div class="r-sub">&nbsp;</div>
+                </div>
+                <div class="result-card">
+                    <div class="r-label">Connection</div>
+                    <div class="r-value" style="font-size:1rem" id="rConn">--</div>
+                    <div class="r-sub">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-actions">
+            <button class="cta-btn" id="btnShare" style="background:var(--accent);color:#000" aria-label="Copy results">
+                <i class="fas fa-copy"></i> Copy Results
+            </button>
+            <button class="btn-outline" id="btnRetest" aria-label="Run another test">
+                <i class="fas fa-redo"></i> Test Again
+            </button>
+        </div>
+    </section>
+
+    <!-- Ad: After Results -->
+    <div style="max-width:1152px;margin:0 auto;padding:0 1rem 2.5rem">
+        <div class="ad-zone rectangle" data-ad-slot="after-results" aria-hidden="true">Advertisement — 300×250</div>
+    </div>
+
+    <!-- How It Works -->
+    <section class="section-inner" aria-label="How it works">
+        <h2 class="section-title">How Qspeed Works</h2>
+        <div class="how-grid">
+            <article class="how-card">
+                <div class="how-icon"><i class="fas fa-play" style="color:var(--accent);font-size:.8rem"></i></div>
+                <h3>1. Click GO</h3>
+                <p>No installation, no signup. Qspeed connects to the nearest test server automatically.</p>
+            </article>
+            <article class="how-card">
+                <div class="how-icon"><i class="fas fa-chart-line" style="color:var(--accent);font-size:.8rem"></i></div>
+                <h3>2. Measure Everything</h3>
+                <p>We test download, upload, ping, jitter, and packet loss using multi-connection streaming.</p>
+            </article>
+            <article class="how-card">
+                <div class="how-icon"><i class="fas fa-clipboard-check" style="color:var(--accent);font-size:.8rem"></i></div>
+                <h3>3. Get Results</h3>
+                <p>Instant results with a quality score. Copy, share, or save to your test history.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Ad: Mid-content -->
+    <div style="max-width:1152px;margin:0 auto;padding:0 1rem 2.5rem">
+        <div class="ad-zone" data-ad-slot="mid-content" aria-hidden="true">Advertisement — Responsive</div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="section-inner" id="faq" aria-label="Frequently asked questions">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div id="faqList">
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a1">
+                    <span>How accurate is Qspeed?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a1" role="region">
+                    <p>Qspeed uses multi-connection streaming to saturate your bandwidth, similar to professional speed tests. Results are affected by Wi-Fi signal, network devices, and server distance. Connect via Ethernet for best accuracy.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a2">
+                    <span>What is a good internet speed?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a2" role="region">
+                    <p>For general browsing, 25 Mbps download is sufficient. Streaming 4K video requires at least 50 Mbps. For gaming, low ping (under 30ms) matters more than raw speed. Remote work with video calls needs 10+ Mbps upload.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a3">
+                    <span>What is jitter and why does it matter?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a3" role="region">
+                    <p>Jitter is the variation in ping times. High jitter (above 30ms) causes choppy video calls, stuttering in games, and buffering during streaming. Qspeed measures jitter by analyzing the consistency of ping samples.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a4">
+                    <span>What is packet loss?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a4" role="region">
+                    <p>Packet loss is the percentage of data packets that fail to reach their destination. Even 1–2% loss can degrade real-time applications like VoIP and gaming. Zero packet loss is ideal.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a5">
+                    <span>Is Qspeed free? Does it collect my data?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a5" role="region">
+                    <p>Qspeed is completely free with no signup required. Your test results are stored locally on your device and are never sent to our servers. The only network requests made are to the speed test server during a test.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" aria-expanded="false" aria-controls="faq-a6">
+                    <span>Why is my speed lower than what my ISP promises?</span>
+                    <i class="fas fa-chevron-down faq-chevron"></i>
+                </button>
+                <div class="faq-a" id="faq-a6" role="region">
+                    <p>ISPs advertise "up to" speeds under ideal conditions. Real-world speeds are reduced by Wi-Fi overhead, distance from the router, network congestion, old wiring, and router quality. Test with Ethernet for the closest match.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Boost Your Speed (Monetization) -->
+    <section class="section-inner" id="boost" aria-label="Improve your speed">
+        <h2 class="section-title">Not Getting the Speed You Pay For?</h2>
+        <div class="cta-grid">
+            <div class="cta-card">
+                <div class="cta-card-title">
+                    <i class="fas fa-shield-halved" style="color:var(--cta)"></i>
+                    <h3>Stop ISP Throttling</h3>
+                </div>
+                <p>Some ISPs throttle streaming and gaming traffic. A VPN encrypts your connection so your ISP can't see what you're doing.</p>
+                <a href="#vpn-affiliate-link" class="cta-btn" rel="sponsored nofollow">
+                    Learn More <i class="fas fa-arrow-right" style="font-size:.65rem"></i>
+                </a>
+            </div>
+            <div class="cta-card">
+                <div class="cta-card-title">
+                    <i class="fas fa-wifi" style="color:var(--cta)"></i>
+                    <h3>Optimize Your Wi-Fi</h3>
+                </div>
+                <p>Wi-Fi 6 routers, mesh systems, and proper placement can double your effective speed. Check our guide for setup tips.</p>
+                <a href="#wifi-guide-link" class="cta-btn" rel="sponsored nofollow">
+                    Read Guide <i class="fas fa-arrow-right" style="font-size:.65rem"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test History -->
+    <section class="section-inner" id="history" aria-label="Test history">
+        <div class="history-actions">
+            <h2 style="font-size:1.25rem;font-weight:700">Test History</h2>
+            <button class="btn-sm" id="btnClearHistory" aria-label="Clear history">Clear All</button>
+        </div>
+        <div class="history-header-row">
+            <span>Date</span>
+            <span class="h-val">Down</span>
+            <span class="h-val">Up</span>
+            <span class="h-val">Ping</span>
+            <span class="h-val">Grade</span>
+        </div>
+        <div id="historyList">
+            <p id="historyEmpty" style="text-align:center;font-size:.8rem;color:var(--muted);padding:1.5rem 0">
+                No tests yet. Run your first speed test above.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="brand" style="margin-bottom:.75rem">
+                    <div class="brand-icon" style="width:24px;height:24px;border-radius:6px">
+                        <i class="fas fa-bolt" style="color:#000;font-size:.6rem"></i>
+                    </div>
+                    <span style="font-weight:700;font-size:.9rem">Qspeed</span>
+                </div>
+                <p style="font-size:.75rem;color:var(--muted)">A free, accurate internet speed test by Quantum Leaf Automation. No tracking, no nonsense.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#boost">Speed Optimization</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="https://quantumleaf.dev">Quantum Leaf Automation</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- Ad: Footer -->
+        <div class="ad-zone" data-ad-slot="footer" style="margin-bottom:1rem" aria-hidden="true">Advertisement — 728×90</div>
+        <p class="footer-copy">&copy; 2025 Quantum Leaf Automation. All rights reserved. Qspeed is not affiliated with your internet service provider.</p>
+    </div>
+</footer>
+
+<!-- JSON-LD: FAQPage -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        { "@type": "Question", "name": "How accurate is Qspeed?", "acceptedAnswer": { "@type": "Answer", "text": "Qspeed uses multi-connection streaming to saturate your bandwidth. Connect via Ethernet for best accuracy." } },
+        { "@type": "Question", "name": "What is a good internet speed?", "acceptedAnswer": { "@type": "Answer", "text": "25 Mbps for browsing, 50 Mbps for 4K streaming, under 30ms ping for gaming, 10+ Mbps upload for video calls." } },
+        { "@type": "Question", "name": "What is jitter?", "acceptedAnswer": { "@type": "Answer", "text": "Jitter is variation in ping times. High jitter (above 30ms) causes choppy video calls and gaming stutter." } },
+        { "@type": "Question", "name": "What is packet loss?", "acceptedAnswer": { "@type": "Answer", "text": "Packet loss is the percentage of data packets that fail to reach their destination. Even 1-2% can degrade real-time apps." } },
+        { "@type": "Question", "name": "Is Qspeed free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free with no signup. Results are stored locally and never sent to our servers." } },
+        { "@type": "Question", "name": "Why is my speed lower than advertised?", "acceptedAnswer": { "@type": "Answer", "text": "ISPs advertise 'up to' speeds. Real-world speeds are reduced by Wi-Fi overhead, congestion, and router quality." } }
+    ]
+}
+</script>
+
+<!-- JS Modules (order matters: dependencies first) -->
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/gauge.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/score.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/results.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

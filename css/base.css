@@ -1,0 +1,50 @@
+/* ── CSS Variables & Reset ── */
+:root {
+    --bg: #06090f;
+    --fg: #e2e8f0;
+    --muted: #64748b;
+    --accent: #00e599;
+    --accent-dim: rgba(0, 229, 153, 0.1);
+    --cta: #ff6b35;
+    --cta-dim: rgba(255, 107, 53, 0.1);
+    --card: #0c1321;
+    --border: #1a2744;
+    --danger: #ef4444;
+    --warn: #f59e0b;
+    --success: #00e599;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+::selection { background: var(--accent); color: #000; }
+
+/* ── Atmosphere blobs ── */
+.atmo { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.blob { position: absolute; border-radius: 50%; filter: blur(150px); opacity: .1; }
+.b1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; animation: drift 20s ease-in-out infinite; }
+.b2 { width: 400px; height: 400px; background: #0ea5e9; bottom: -100px; left: -60px; animation: drift 24s ease-in-out infinite reverse; }
+
+@keyframes drift {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.05); }
+}
+
+/* ── Particle canvas ── */
+#particleCanvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+/* ── Spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin .7s linear infinite; }
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    .blob, .spin { animation: none !important; }
+    * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

@@ -1,0 +1,18 @@
+const STATE = {
+    testing: false,
+    phase: 'idle',
+    currentSpeed: 0,
+    targetSpeed: 0,
+    maxGauge: 100,
+    history: [],
+    results: null,
+    abort: null,
+    serverOk: false,
+    ispInfo: {},
+    connInfo: {},
+    pingSamples: [],
+    dlSamples: [],
+    ulSamples: [],
+    failedRequests: 0,
+    totalRequests: 0,
+};
