@@ -1,4 +1,9 @@
-const PHASE_MAP = {
+/**
+ * @fileoverview UI state controller.
+ * Manages phase card transitions (idle → ping → jitter → download → upload → done),
+ * FAQ accordion, and full UI reset.
+ */
+
     ping: 'phPing',
     jitter: 'phJitter',
     download: 'phDown',

@@ -1,4 +1,9 @@
-function initParticles() {
+/**
+ * @fileoverview Background particle canvas animation.
+ * Renders 50 slow-drifting green dots on a fixed canvas behind the UI.
+ * Wraps at viewport edges. Respects prefers-reduced-motion via CSS.
+ */
+
     const cv = $('particleCanvas');
     const ctx = cv.getContext('2d');
     let W, H;

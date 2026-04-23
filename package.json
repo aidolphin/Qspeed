@@ -1,0 +1,34 @@
+{
+  "name": "qspeed",
+  "version": "1.0.0",
+  "description": "Free, open-source internet speed test — download, upload, ping, jitter, packet loss.",
+  "private": false,
+  "license": "MIT",
+  "author": "Quantum Leaf Automation <hello@quantumleaf.dev>",
+  "homepage": "https://qspeed.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuantumLeafAutomation/qspeed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/QuantumLeafAutomation/qspeed/issues"
+  },
+  "scripts": {
+    "dev": "python3 serve.py",
+    "deploy": "wrangler deploy",
+    "deploy:preview": "wrangler deploy --env preview"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "@cloudflare/kv-asset-handler": "^0.3.0"
+  },
+  "keywords": [
+    "speed-test",
+    "internet-speed",
+    "bandwidth",
+    "ping",
+    "jitter",
+    "cloudflare",
+    "open-source"
+  ]
+}

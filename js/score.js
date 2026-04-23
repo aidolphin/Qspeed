@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Quality score algorithm.
+ * Converts raw test results into a 0–100 score and A+–F letter grade.
+ * Weights: Download 30pts, Upload 25pts, Ping 25pts, Jitter 12pts, Loss 8pts.
+ *
+ * @param {{download:number, upload:number, ping:number, jitter:number, loss:number}} r
+ * @returns {{score:number, grade:string}}
+ */
 function calculateScore(r) {
     if (!r) return { score: 0, grade: 'F' };
     let s = 0;

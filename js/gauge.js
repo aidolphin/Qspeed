@@ -1,4 +1,10 @@
-const G = { cx: 340, cy: 340, r: 270, lw: 14, start: Math.PI * 0.75, span: Math.PI * 1.5, ticks: 30, glow: 24 };
+/**
+ * @fileoverview Canvas arc gauge renderer.
+ * Draws the speed gauge with smooth lerp animation, tick marks,
+ * color gradient (green → yellow → red), and glow effect.
+ * Auto-scales the max value based on measured speed.
+ */
+ r: 270, lw: 14, start: Math.PI * 0.75, span: Math.PI * 1.5, ticks: 30, glow: 24 };
 let gCtx;
 
 function gaugeColor(ratio) {

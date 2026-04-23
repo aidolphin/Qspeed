@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Application-wide configuration constants.
+ * All tunable values live here — change once, affects everywhere.
+ */
+
+/** @type {Object} Global configuration */
 const CONFIG = {
     SERVER: 'https://speed.cloudflare.com',
     PING_SAMPLES: 15,

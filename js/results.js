@@ -1,4 +1,7 @@
-const GRADE_COLORS = {
+/**
+ * @fileoverview Results display, localStorage history, and clipboard export.
+ */
+
     'A+': 'var(--success)', 'A': 'var(--success)',
     'B+': '#22d3ee', 'B': '#22d3ee',
     'C': 'var(--warn)', 'D': '#f97316', 'F': 'var(--danger)',

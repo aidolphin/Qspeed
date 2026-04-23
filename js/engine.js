@@ -1,4 +1,14 @@
-async function checkServer() {
+/**
+ * @fileoverview Speed test engine.
+ * Handles server health check, ISP detection, and the three test phases:
+ *   1. Ping + Jitter  — 15 samples to speed.cloudflare.com/__down?bytes=0
+ *   2. Download       — multi-stream saturating fetch with streaming reader
+ *   3. Upload         — parallel POST streams with pre-generated random buffer
+ *
+ * All functions are async and accept an AbortController signal
+ * so the user can stop the test at any point cleanly.
+ */
+
     const dot = $('statusDot'), txt = $('statusText');
     dot.className = 'status-dot checking';
     txt.textContent = 'Checking server...';

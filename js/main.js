@@ -1,4 +1,10 @@
-async function runTest() {
+/**
+ * @fileoverview Application entry point.
+ * Initialises all modules, binds DOM events, and orchestrates the test run.
+ * Load order in index.html must be: config → state → utils → particles →
+ *   gauge → graph → score → engine → results → ui → main
+ */
+
     if (STATE.testing) {
         if (STATE.abort) STATE.abort.abort();
         STATE.testing = false;

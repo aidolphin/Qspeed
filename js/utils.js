@@ -1,7 +1,29 @@
+/**
+ * @fileoverview Shared utility functions used across all modules.
+ */
+
+/** @param {string} id @returns {HTMLElement|null} */
 const $ = id => document.getElementById(id);
+
+/**
+ * Format a speed value for display.
+ * @param {number} v - Speed in Mbps
+ * @param {number} [d=1] - Decimal places for values under 10
+ * @returns {string}
+ */
 const fmt = (v, d = 1) => v < 10 ? v.toFixed(d) : Math.round(v).toString();
+
+/**
+ * Clamp a number between min and max.
+ * @param {number} v @param {number} min @param {number} max @returns {number}
+ */
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
 
+/**
+ * Show a toast notification.
+ * @param {string} msg - Message text
+ * @param {'info'|'error'|'warn'} [type='info'] - Toast type
+ */
 function toast(msg, type = 'info') {
     const box = $('toastBox');
     const el = document.createElement('div');

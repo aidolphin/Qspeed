@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Real-time speed graph renderer.
+ * Draws a bezier-smoothed line graph of speed over time
+ * with gradient fill, grid lines, and a live end-dot.
+ * Resamples to the last 80 data points to keep it readable.
+ */
+
 let grCtx;
 
 function resizeGraph() {

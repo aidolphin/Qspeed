@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Single source of truth for all runtime state.
+ * Never mutate STATE directly from outside — use the engine functions.
+ */
+
+/** @type {Object} Global application state */
 const STATE = {
     testing: false,
     phase: 'idle',
